@@ -1,0 +1,452 @@
+
+
+<GridLayout>
+    canvas.before:
+        BorderImage:
+            # BorderImage behaves like the CSS BorderImage
+            border: 10, 10, 10, 10
+            source: 'images.jpg'
+            pos: self.pos
+            size: self.size
+
+
+
+WindowManager:
+    LogonWindow:
+    MainWindow:
+    ConfigurationWindow:
+    EditCreatePasswordWindow:
+
+<LogonWindow>:
+    spacing: 10
+    name: "logon"
+    login__: login__
+    passwd__: passwd__
+
+
+    GridLayout:
+        background_color: 1, 1, 1,1
+        cols:1
+        padding:40
+        borders: 50, 'solid', (1,0,0,1)
+        GridLayout:
+            row_default_height: '50dp'
+            row_force_default: True
+            padding: 5, 10
+            size_hint_y: None
+            height: self.minimum_height
+            cols: 2
+            Label:
+                size: self.texture_size
+                text: "Login"
+                font_size:10
+
+            TextInput:
+                size_hint: (4, None)
+                height: 33
+                background_color: 0.29,0,0.52,0.8
+                id: login__
+                multiline: False
+
+            Label:
+                password: True
+                size: self.texture_size
+                text: "Haslo: "
+                font_size:10
+
+            TextInput:
+                size_hint: (4, None)
+                height: 33
+                background_color: 0.29,0,0.52,0.8
+                id: passwd__
+                multiline: False
+        Button:
+            size_hint: (4, None)
+            height: 33
+            background_color: 0.29,0,0.52,0.8
+            text: "LOGOWANIE"
+            on_release: root.check()
+
+
+
+<PopupsLogon>:
+    Label:
+        size_hint: 0.1, 0.0
+        pos_hint: {"x":0.45, "top":0.65}
+        color: 1,1,1,1
+        text: "Login and password are"
+
+    Label:
+        size_hint: 0.1, 0.0
+        color: 1,1,1,1
+        pos_hint: {"x":0.45, "top":0.25}
+        text: "incorrect"
+
+<PopupsNewApt>:
+    Label:
+        size_hint: 0.1, 0.0
+        pos_hint: {"x":0.45, "top":0.65}
+        text: "Login and password are"
+
+    Label:
+        size_hint: 0.1, 0.0
+        pos_hint: {"x":0.45, "top":0.25}
+        text: "incorrect"
+
+<MainWindow>:
+    name: "main"
+
+    GridLayout:
+        cols:1
+        padding:10
+        GridLayout:
+            cols: 1
+
+            Button:
+                size_hint: (4, None)
+                height: 60
+                font_size: 12
+                text: "TWORZENIE I EDYCJA"
+                on_release:
+                    app.root.current = "EditCreatePassword"
+
+        GridLayout:
+            cols:2
+            size_hint:(1, None)
+            height: 60
+            Button:
+                size_hint: (20, None)
+                height: 33
+                background_color: [1,0,1,1]
+                font_size:9
+                text: "Wylogowanie"
+                on_release:
+                    app.root.current = "logon"
+                    root.manager.transition.direction = "right"
+
+            Button:
+                size_hint: (60, None)
+                height: 33
+                text: "Ustawienia"
+                on_release:
+                    app.root.current = "config"
+                    root.manager.transition.direction = "left"
+
+<ConfigurationWindow>:
+    name: "config"
+    GridLayout:
+        cols:1
+        padding:10
+        GridLayout:
+            cols: 3
+            Label:
+                size_hint: (4, None)
+                height: 33
+                font_size: 10
+                text_size: self.size
+                valign: 'middle'
+                text: "ZMIANA HASLA GLOWNEGO"
+
+            GridLayout:
+                cols: 2
+                size_hint: (4, None)
+                height: 27
+                TextInput:
+                    id:changePassword_1
+                    size_hint: (1, None)
+                    margin:0.5
+                    height: 27
+                    font_size: 12
+
+                TextInput:
+                    id:changePassword_2
+                    size_hint: (1, None)
+                    margin:0.5
+                    height: 27
+                    font_size: 12
+
+            Button:
+                id:ButtomChangePasswd
+                font_size: 12
+                size_hint: (4, None)
+                height: 27
+                text: "Save password"
+                on_press: root.save_passwd()
+
+            Label:
+                size_hint: (4, None)
+                height: 33
+                font_size: 10
+                text_size: self.size
+                valign: 'middle'
+
+            Label:
+                size_hint: (4, None)
+                height: 33
+                font_size: 10
+                text_size: self.size
+                valign: 'middle'
+
+            Label:
+                size_hint: (4, None)
+                height: 33
+                font_size: 10
+                text_size: self.size
+                valign: 'middle'
+
+            Label:
+                size_hint: (4, None)
+                height: 33
+                font_size: 10
+                text_size: self.size
+                valign: 'middle'
+                text: "NAZWA PLIKU"
+
+            Label:
+                id: name_file
+                size_hint: (4, None)
+                height: 33
+                font_size: 10
+                text_size: self.size
+                halign: 'center'
+                valign: 'middle'
+
+            TextInput:
+                id:fileNameCode
+                size_hint: (4, None)
+                height: 27
+                font_size: 12
+
+            Label:
+                size_hint: (4, None)
+                height: 33
+                font_size: 10
+                text_size: self.size
+                valign: 'middle'
+                text: "DOMYSLNA ILOSC ZNAKOW W HASLE"
+
+
+            Label:
+                id:slider_size_gen_pass_Slider
+                size_hint: (4, None)
+                height: 33
+                text: str(slider.value)
+            BoxLayout:
+                id:Slider_
+                size_hint: (4, None)
+                height: 27
+                Slider:
+                    id: slider
+                    min: 0
+                    max: 39
+                    step: 1
+                    orientation: 'horizontal'
+                    Label:
+                        text: str(slider.value)
+
+
+            Label:
+                size_hint: (4, None)
+                height: 33
+                font_size: 10
+                text_size: self.size
+                valign: 'middle'
+                text: "WYMAGAJ HASLA LOGOWANIA"
+
+            Label:
+                size_hint: (4, None)
+                height: 33
+                font_size: 10
+                text_size: self.size
+                halign: 'center'
+                valign: 'middle'
+                text: "keyLogonAccept"
+
+            GridLayout:
+                cols: 2
+                size_hint: (4, None)
+                height: 27
+                Button:
+                    id:YesLogonAccept
+                    text: "TAK"
+                    background_color: [1,0,0,1]
+                    on_press: root.pressYesTrue()
+
+                Button:
+                    id:NoLogonAccept
+                    text: "NIE"
+                    background_color: [1,0,0,1]
+                    on_press: root.pressNoTrue()
+
+        GridLayout:
+            cols:3
+            size_hint:(1, None)
+            height: 60
+            Button:
+                size_hint: (20, None)
+                height: 33
+                background_color: [1,0,0,1]
+                text: "Wroc"
+                on_release:
+                    app.root.current = "main"
+                    root.manager.transition.direction = "right"
+            Button:
+                on_press: root.refresh_()
+                size_hint: (39, None)
+                height: 33
+                text: "Refresh"
+
+            Button:
+                size_hint: (40, None)
+                height: 33
+                text: "Save"
+                on_press: root.save()
+
+
+
+
+<CapitalButton>:
+    text_size: self.width - 50, None
+    halign: 'left'
+    valign: 'middle'
+    font_size: 16
+    on_press: app.root.show_capital(self.text)
+
+<Popups>:
+    editposPopup: editposPopup
+    editNamePopup: editNamePopup
+    editPasswordPopup: editPasswordPopup
+    Label:
+        size_hint: 0.1, 0.10
+        pos_hint: {"x":0.1, "top":0.97}
+        text: "Pozycja"
+    TextInput:
+        size_hint: 0.6, 0.12
+        pos_hint: {"x":0.32, "top":0.97}
+        id: editposPopup
+        text: app.editposPopup_
+        multiline: False
+
+    Label:
+        size_hint: 0.1, 0.10
+        pos_hint: {"x":0.1, "top":0.82}
+        text: "Nazwa"
+    TextInput:
+        size_hint: 0.6, 0.12
+        pos_hint: {"x":0.32, "top":0.82}
+        id: editNamePopup
+        text: app.editNamePopup_
+        multiline: False
+
+    Label:
+        size_hint: 0.1, 0.10
+        pos_hint: {"x":0.1, "top":0.67}
+        text: "Haslo"
+    TextInput:
+        size_hint: 0.60, 0.12
+        pos_hint: {"x":0.32, "top":0.67}
+        id: editPasswordPopup
+        text: app.editPasswordPopup_
+        multiline: False
+
+    Button:
+        text: "Generuj haslo"
+        # set size of the button
+        size_hint: 0.63, 0.10
+        # set position of the button
+        pos_hint: {"x":0.30, "y":0.43}
+        on_press: popup.dismiss()
+
+    Button:
+        text: "Zapisz"
+        # set size of the button
+        size_hint: 0.32, 0.12
+        # set position of the button
+        pos_hint: {"x":0.65, "y":0.1}
+        on_press: root.btn()
+
+    Button:
+        text: "Usun"
+        # set size of the button
+        size_hint: 0.32, 0.12
+        # set position of the button
+        pos_hint: {"x":0.65, "y":0.23}
+        on_press: root.delete()
+
+    Button:
+        text: "Od"
+        size_hint: 0.32, 0.12
+        pos_hint: {"x":0, "y":0.23}
+        on_press: root.refresh()
+
+
+
+<EditCreatePasswordWindow>:
+    name: "EditCreatePassword"
+
+    GridLayout:
+        cols:1
+
+        GridLayout:
+            cols:2
+            padding:10
+            size_hint: 0.60, 0.32
+            Button:
+                background_color: [0,1,0,0.9]
+                margin_left:10
+                font_size:10
+                text: "DODAJ NOWE HASLO"
+                on_release: root.btn()
+
+            Button:
+                font_size:10
+                background_color: [0.00317,0.254,0.03,0.9]
+                text: "USUN WSZYSTKIE HASLA"
+                on_release:
+                    app.root.current = "main"
+                    root.manager.transition.direction = "right"
+
+        RV:
+            viewclass: 'TestBox'
+            RecycleBoxLayout:
+                padding_left:1
+                padding_top:3
+                padding_right:2
+                default_size: None, dp(40)
+                default_size_hint: 1, None
+                size_hint_y: None
+                bar_margin: 2
+                height: self.minimum_height+1
+                orientation: 'vertical'
+
+
+
+        GridLayout:
+            cols:2
+            padding:10
+            size_hint: 0.60, 0.22
+            Button:
+                background_color: [1,0,0,1]
+                size_hint: (20, None)
+                font_size:9
+                height: 33
+                text: "POWROT"
+                on_release:
+                    app.root.current = "main"
+                    root.manager.transition.direction = "right"
+            Button:
+                size_hint: (60, None)
+                height: 33
+                text: 'refresh_'
+                on_release: root.refresh_()
+
+<TestBox>:
+    Label:
+        id:ind
+
+    Button:
+        id: passwd_part
+        background_color: [1,1,0,0.8]
+        on_press: root.action(root.parent.parent)
+
+
